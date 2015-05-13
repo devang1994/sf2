@@ -75,10 +75,6 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/lighthouse.png
 	width 70text%
@@ -250,6 +246,10 @@ function was used, this function automatically calculates an appropriate
 Image Filtering
 \end_layout
 
+\begin_layout Subsection
+Low pass Filter
+\end_layout
+
 \begin_layout Standard
 A simple lowpass filter of odd length N for use in lab was obtained by defining
  the impulse response
@@ -339,7 +339,7 @@ convse
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -414,6 +414,365 @@ With Symmetric Extension
 
 \begin_layout Plain Layout
 Lowpass filtered image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+The columns of the row-wise filtered image were then filtered to get a complete
+ 2-D low pass filter.
+ It was then tested if it makes a difference or not whether the rows or
+ columns are filtered first.
+ The images formed by filtering rows or columns first had no discernible
+ differenc, the maximum absolute error between the 2 was negligible hence
+ it was concluded filtering rows or columns first does not make a difference
+ to the images.
+ The sample image was 2d lowpass filtered image and is shown in Figure 5.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/lowpass15.png
+	width 70text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+2d low pass filtered sample image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+High pass Filter
+\end_layout
+
+\begin_layout Standard
+A simple 2D high pass filtered image was created by substracting the 2d
+ low pass filtered image from the original image.
+ Some high-pass versions of the sampled image can be seen in Figure 6.
+\end_layout
+
+\begin_layout Subsection
+Comparison of different filter lengths
+\end_layout
+
+\begin_layout Standard
+A range of low-pass and corresponding high pass filtered images were then
+ generated with a range of odd-length half-cosine filters.
+ These are shown in Figure 6.
+ It can be seen that the low pass images become increasingly blurry as the
+ length of the filter increaces, this makes sense since the a longer length
+ filter takes into account more points to calculate every point hence blurring
+ things more.
+ In the frequency domain this can be seen as a reduction in cutoff frequency
+ of the filter, hence even lower frequency spatial variations get attenuated
+ for higher filter lengths, hence the blurring.
+ As the length increaces the high-pass image then comprises more of the
+ lower frequency components of the image.
+\end_layout
+
+\begin_layout Standard
+This leads to reduction in the energy of the low pass filter and increase
+ in energy of the high pass filter with increrasing filter order, this can
+ be seen in Table 1.<<confirm>> <<possibly reprase, comment on high pass>>
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/highpass5.png
+	width 30text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+High-pass for N=5,15,25
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+High-pass and Low-pass filtered images for different filter lengths
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Energy Content of images
+\end_layout
+
+\begin_layout Standard
+From Table 1 it can be seen that highpass filtered images have much lesser
+ energy than low pass filtered images.
+ This means that the low-pass component of images is responsible for most
+ of their energy.
+ Even as the length of the filter increaces the energy of the high-pass
+ image still doesnt get close to that of the low pass image.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Filter length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Low-pass
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+High-Pass
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.28x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.52x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.25x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.80x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.24x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5.79x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Comparing energy of Low-pass and High-pass images for different filter lengths
 \end_layout
 
 \end_inset

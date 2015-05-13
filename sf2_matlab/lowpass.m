@@ -3,8 +3,7 @@ function [Xl] = lowpass( X ,N)
 %   Detailed explanation goes here
 
 h=halfcos(N);
-Xt=conv2se(h,1,X);
-Xl=conv2se(1,h,Xt);
+Xl=conv2se(h,h,X);
 %draw (Xl);
 end
 

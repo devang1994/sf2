@@ -1,0 +1,246 @@
+#LyX 1.6.10 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+SF2 Interim Report
+\end_layout
+
+\begin_layout Author
+Devang Agrawal
+\end_layout
+
+\begin_layout Date
+May 2015
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Image Processing is a very exciting field in the domain of Signal Processing.
+ In this lab various characteristics of filtered images are explored and
+ are then used to design effective compression techniques for the images.
+\end_layout
+
+\begin_layout Section
+Images
+\end_layout
+
+\begin_layout Standard
+Raw images are simple 2d matrices of numbers.
+ Colormaps are used to map these numbers to what colour is displayed on
+ the screen.
+ Colormaps can be of various different types, example linear or designed
+ for histogram equalization.
+\end_layout
+
+\begin_layout Section
+Image Filtering
+\end_layout
+
+\begin_layout Standard
+The simple 
+\emph on
+low-pass filter
+\emph default
+ used in the lab has a half cosine impulse response in 1 dimension.
+ 
+\emph on
+Separable 
+\emph default
+2-D filtering can be used to get a 2D low-pass filter by separately filtering
+ the rows and columns.
+ In the lab the output from filtering rows first or filtering columns first
+ was observed and it was concluded that the output in the 2 cases was the
+ same.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+High-pass filtered 
+\emph default
+image
+\emph on
+ 
+\emph default
+can be created by substracting the low-pass filtered image from the original
+ one.
+ 
+\end_layout
+
+\begin_layout Subsection
+Comparison at different filter lengths
+\end_layout
+
+\begin_layout Standard
+As the filter length is increaced the cut-off point of low-pass filter increaces
+ and that of the high-pass filter decreaces.
+ Hence the low-pass filtered image becomes blurry as filter length increaces.
+ The high-pass filtered image accounts for more and more of the relevant
+ features as the filter length increaces.
+\end_layout
+
+\begin_layout Subsection
+Energy Content
+\end_layout
+
+\begin_layout Standard
+The energy content of the high-pass filtered image was found to be much
+ lesser than that of low-pass filtered images.
+ Following observations in Section 3.1 the energy content of the high pass
+ filtered images increaced with increacing filter length, however they still
+ never get close to that of low-pass filtered images.
+ 
+\end_layout
+
+\begin_layout Section
+Laplacian Pyramid
+\end_layout
+
+\begin_layout Standard
+The Laplacian pyramid is a energy compaction scheme based on the observation
+ made in Section 3.22.
+\end_layout
+
+\begin_layout Standard
+Lowpass images have much lower bandwidth than the original image and can
+ hence be sub-sampled without loss of much information.
+ This forms the basis of the Laplacian Pyramid scheme.
+ Matlab scripts were written to encode images as Laplacian pyramids and
+ to reconstruct them from these pyramids.
+ It was observed that without quantization there was no error between the
+ original image and the reconstructed images.
+\end_layout
+
+\begin_layout Section
+Quantization and coding efficiency
+\end_layout
+
+\begin_layout Standard
+For effective data compression the bits needed to store the decimated low-pass
+ image and the errors at each stage of the pyramid need to be lower than
+ that required for the original image.
+ This was done by finding the total entropy of each image and equating it
+ to the number of bits needed to store the image, assuming that an efficient
+ coding technique is used.
+ 
+\end_layout
+
+\begin_layout Standard
+The number of bits required to store the original image was found to be
+ more than that required for storing the error and the subsampled image.
+ Hence using Laplacian pyramids can achieve data compression.
+ From a information theory perspective the compression is achieved since
+ the low pass image has highly corelated adjacent matrix locations, this
+ structure of the low pass image is intrinsically exploited when they are
+ subsampled reducing the number of bits required for storing them.
+ A markov chain based technique for finding image corelations might exploit
+ this structure well, achieving high compression ratios but this wasnt explored
+ within the scope of the project.
+\end_layout
+
+\begin_layout Standard
+The images were then quantized to a step size of 17 to further reduce their
+ entropy and the number of bits required to store them.
+ This reduced the storage required for the one stage laplacian pyramid scheme
+ and the original image.
+ The effect on the Laplacian pyramid scheme was however much stronger.
+ As the number of layers of the pyramid are increaced the number of bits
+ required for storing the image in the Laplacian pyramid scheme further
+ decreaces.
+ This is because each lowpassed image(Xn) can be treated as a new image
+ which is then compressed by using an extra stage of the pyramid.
+\end_layout
+
+\begin_layout Standard
+To assess the quality of the quantized image the standard deviation between
+ the quantized image and the original image is used as a measure.<<comment
+ on visual differences in images>>
+\end_layout
+
+\begin_layout Standard
+The r.m.s error at the same amount of quantization is much higher for the
+ image reconstructed from the Laplacian pyramid scheme than that of the
+ directly quantized image.
+ This is because small changes due to quantization in the smaller images
+ of the Laplacian pyramid have a much higher effect on the r.m.s error than
+ the larger images.
+ To get the same r.m.s error as a direct quantizer of step size 17, a step
+ size of 10.45 is needed to quantize the images in the Laplacian pyramid.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Equal MSE criterion: 
+\series default
+To solve this problem and optimally quantize the Laplacian pyramid an equal
+ MSE(mean squared error) criterion can be used.
+ In this the images at various stages of the Laplacian pyramid are quantized
+ so that they contribute approximately equally to the total MSE.
+ This is achieved by measuring the 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+impulse response
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+ of different stages in the reconstructed images.
+ As expected the impulse responses of the smaller images in the Laplacian
+ pyramid are higher than the larger ones.
+\end_layout
+
+\end_body
+\end_document
