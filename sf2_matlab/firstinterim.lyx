@@ -66,7 +66,57 @@ Introduction
 Image processing is a very exciting field in the domain of Signal Processing.
  In this lab various image processing techniques are introduced with the
  help of Matlab.
- Different techniques used in real world compression algorithms
+ Different techniques used in real world compression algorithms.
+ The image shown in Figure 1 was used as the test image throughout the lab.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/lighthouse.png
+	width 70text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The sample image used in the lab
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -86,7 +136,7 @@ Raw images are simply 2d matrices of numbers.
 \family typewriter
 map 
 \family default
-is a simple linear mapping as shown in Figure 1a, 
+is a simple linear mapping as shown in Figure 2a, 
 \family typewriter
 map2 
 \family default
@@ -197,7 +247,199 @@ function was used, this function automatically calculates an appropriate
 \end_layout
 
 \begin_layout Section
+Image Filtering
+\end_layout
 
+\begin_layout Standard
+A simple lowpass filter of odd length N for use in lab was obtained by defining
+ the impulse response
+\family typewriter
+ 
+\emph on
+h(n)
+\family default
+\emph default
+ of the filter to be a sampled half-cosine pulse:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+h(n)=Gcos\left(\frac{n\pi}{N+1}\right)\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\; for\:\frac{-(N-1)}{2}\leq n\leq\frac{N-1}{2}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A sample filter with 
+\family typewriter
+N=15 
+\family default
+is shown in Figure 3.
+ G is a gain factor which is adjusted to give unit gain at zero frequency.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/h_impulse.png
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Impulse response
+\emph on
+ h(n)
+\emph default
+ of a lowpass filter used in the lab
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ This filter was then convolved row-wise with the sample image, the resulting
+ image was then trimmed to get Figure 4a.
+ It can be seen that the edges of the image have been darkened since the
+ lowpass filter assumes that the intensity is zero outside the image.
+ Symmetric extension <<maybe describe>>can be used to minimize this effect.
+ The provided function 
+\family typewriter
+convse
+\family default
+ was used for this purpose, the result is given in Figure 4b, it can be
+ seen that the dark edges have disappeared.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/filtered_day1_clipped.png
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Without Symmetric Extension
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/filtered_day1_convse.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+With Symmetric Extension
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Lowpass filtered image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+The columns of the row-wise filtered image were then filtered to get a complete
+ 2-D low pass filter.
+ It was then tested if it makes a difference or not whether the rows or
+ columns are filtered first.
+ The images formed by filtering rows or columns first had no discernible
+ differenc, the maximum absolute error between the 2 was negligible hence
+ it was concluded filtering rows or columns first does not make a difference
+ to the images.
+ A 2d lowpass filtered image is shown in Figure 5.
 \end_layout
 
 \end_body
