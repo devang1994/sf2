@@ -17,19 +17,14 @@
 
 \graphics default
 \paperfontsize default
-\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry true
+\use_geometry false
 \use_amsmath 1
 \use_esint 1
 \cite_engine basic
 \use_bibtopic false
 \paperorientation portrait
-\leftmargin 2cm
-\topmargin 2cm
-\rightmargin 2cm
-\bottommargin 2cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -40,7 +35,6 @@
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
 \author "" 
 \end_header
 
@@ -98,7 +92,7 @@ is a different mapping which can be used to enchance the contrast in the
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -134,7 +128,7 @@ Simple linear map (map)
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -186,17 +180,6 @@ Different colormaps
 
 \end_inset
 
- 
-\family default
-For the rest of the lab the 
-\family typewriter
-draw 
-\family default
-function was used, this function automatically calculates an appropriate
- greyscale palette for different images.
-\end_layout
-
-\begin_layout Section
 
 \end_layout
 

@@ -188,16 +188,11 @@ Different colormaps
 
  
 \family default
-For the rest of the lab the 
+For the rest of the lab 
 \family typewriter
 draw 
 \family default
-function was used, this function automatically calculates an appropriate
- greyscale palette for different images.
-\end_layout
-
-\begin_layout Section
-
+D
 \end_layout
 
 \end_body
