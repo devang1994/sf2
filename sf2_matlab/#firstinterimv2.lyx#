@@ -110,7 +110,7 @@ image
 \emph on
  
 \emph default
-can be created by substracting the low-pass filtered image from the original
+can be created by subtracting the low-pass filtered image from the original
  one.
  
 \end_layout
@@ -120,11 +120,11 @@ Comparison at different filter lengths
 \end_layout
 
 \begin_layout Standard
-As the filter length is increaced the cut-off point of low-pass filter increaces
- and that of the high-pass filter decreaces.
- Hence the low-pass filtered image becomes blurry as filter length increaces.
+As the filter length is increased the cut-off point of low-pass filter increases
+ and that of the high-pass filter decreases.
+ Hence the low-pass filtered image becomes blurry as filter length increases.
  The high-pass filtered image accounts for more and more of the relevant
- features as the filter length increaces.
+ features as the filter length increases.
 \end_layout
 
 \begin_layout Subsection
@@ -135,7 +135,7 @@ Energy Content
 The energy content of the high-pass filtered image was found to be much
  lesser than that of low-pass filtered images.
  Following observations in Section 3.1 the energy content of the high pass
- filtered images increaced with increacing filter length, however they still
+ filtered images increased with increasing filter length, however they still
  never get close to that of low-pass filtered images.
  
 \end_layout
@@ -150,7 +150,7 @@ The Laplacian pyramid is a energy compaction scheme based on the observation
 \end_layout
 
 \begin_layout Standard
-Lowpass images have much lower bandwidth than the original image and can
+Low-pass images have much lower bandwidth than the original image and can
  hence be sub-sampled without loss of much information.
  This forms the basis of the Laplacian Pyramid scheme.
  Matlab scripts were written to encode images as Laplacian pyramids and
@@ -175,27 +175,27 @@ For effective data compression the bits needed to store the decimated low-pass
 
 \begin_layout Standard
 The number of bits required to store the original image was found to be
- more than that required for storing the error and the subsampled image.
+ more than that required for storing the error and the sub-sampled image.
  Hence using Laplacian pyramids can achieve data compression.
  From a information theory perspective the compression is achieved since
- the low pass image has highly corelated adjacent matrix locations, this
+ the low pass image has highly correlated adjacent matrix locations, this
  structure of the low pass image is intrinsically exploited when they are
- subsampled reducing the number of bits required for storing them.
- A markov chain based technique for finding image corelations might exploit
- this structure well, achieving high compression ratios but this wasnt explored
- within the scope of the project.
+ sub-sampled reducing the number of bits required for storing them.
+ A Markov chain based technique for finding image correlations might exploit
+ this structure well, achieving high compression ratios but this was not
+ explored within the scope of the project.
 \end_layout
 
 \begin_layout Standard
 The images were then quantized to a step size of 17 to further reduce their
  entropy and the number of bits required to store them.
- This reduced the storage required for the one stage laplacian pyramid scheme
+ This reduced the storage required for the one stage Laplacian pyramid scheme
  and the original image.
  The effect on the Laplacian pyramid scheme was however much stronger.
- As the number of layers of the pyramid are increaced the number of bits
+ As the number of layers of the pyramid are increased the number of bits
  required for storing the image in the Laplacian pyramid scheme further
- decreaces.
- This is because each lowpassed image(Xn) can be treated as a new image
+ decreases.
+ This is because each low-passed image(Xn) can be treated as a new image
  which is then compressed by using an extra stage of the pyramid.
 \end_layout
 
@@ -274,18 +274,48 @@ h
 \end_inset
 
 , which has a lower cut-off frequency than the original filter.
- This altered the impulse respose of different images, which grew slower
+ This altered the impulse response of different images, which grew slower
  than sections 4 and 5 due to the low cutoff nature of the filter.
  Using optimized step sizes a Compression ratio 
 \series bold
 1.77 
 \series default
 was obtained which is less than that obtained in section 5.
- This can be explained by the lower cut-off frequency of the 
+ This can be explained by the lower cut-off frequency of the filter which
+ causes the low-pass images to have lower energies making the Laplacian
+ Pyramid scheme less effective.
 \end_layout
 
 \begin_layout Section
 Conclusion
+\end_layout
+
+\begin_layout Itemize
+A separable 2d low pass flter is easy to design and works much better than
+ an equivalent non-separable filter.
+ 
+\end_layout
+
+\begin_layout Itemize
+As the length half-cosine filters increaces their cut-off frequency decreaces
+ and the low-pass filtered images get more blurry.
+\end_layout
+
+\begin_layout Itemize
+In general low-pass images have more energy than high-pass images
+\end_layout
+
+\begin_layout Itemize
+A Laplacian pyramid is an excellent method to achieve image compression
+\end_layout
+
+\begin_layout Itemize
+Quantizing images can reduce the storage space they require.
+\end_layout
+
+\begin_layout Itemize
+When quantizing images in the Laplacian pyramid an equal MSE criterion can
+ be used to optimize the compression ratio
 \end_layout
 
 \end_body

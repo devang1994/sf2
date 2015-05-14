@@ -89,7 +89,7 @@ The simple
 \emph on
 low-pass filter
 \emph default
- used in the lab has a half cosine impulse response in 1 dimension.
+ useeed in the lab has a half cosine impulse response in 1 dimension.
  
 \emph on
 Separable 
@@ -280,7 +280,18 @@ h
 \series bold
 1.77 
 \series default
-was obtained.
+was obtained which is less than that obtained in section 5.
+ This can be explained by the lower cut-off frequency of the filter which
+ causes the low-pass images to have lower energies making the Laplacian
+ Pyramid scheme less effective.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+A separable 
 \end_layout
 
 \end_body
