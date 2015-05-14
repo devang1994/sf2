@@ -540,21 +540,27 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/highpass5.png
-	width 30text%
+	width 45text%
 
 \end_inset
 
 
 \begin_inset Graphics
 	filename images/highpass15.png
-	width 30text%
+	width 45text%
 
 \end_inset
 
 
-\begin_inset Graphics
-	filename images/highpass25.png
-	width 30theight%
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
 
 \end_inset
 
@@ -562,7 +568,7 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-High-pass for N=5,15,25
+High-pass for N=5,15
 \end_layout
 
 \end_inset
@@ -576,6 +582,61 @@ High-pass for N=5,15,25
 \end_layout
 
 \begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/lowpass5.png
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename images/lowpass15.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Low-pass for N=5,15
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \begin_inset Caption
 
 \begin_layout Plain Layout

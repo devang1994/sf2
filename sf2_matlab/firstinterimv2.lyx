@@ -27,9 +27,9 @@
 \use_bibtopic false
 \paperorientation portrait
 \leftmargin 2cm
-\topmargin 2cm
+\topmargin 1.75cm
 \rightmargin 2cm
-\bottommargin 2cm
+\bottommargin 1.75cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -76,8 +76,8 @@ Images
 Raw images are simple 2d matrices of numbers.
  Colormaps are used to map these numbers to what colour is displayed on
  the screen.
- Colormaps can be of various different types, example linear or designed
- for histogram equalization.
+ Colormaps can be of various different types.
+ In the lab linear and histogram equalization based maps were used.
 \end_layout
 
 \begin_layout Section
@@ -110,9 +110,8 @@ image
 \emph on
  
 \emph default
-can be created by subtracting the low-pass filtered image from the original
- one.
- 
+were created by subtracting the low-pass filtered image from the original
+ image.
 \end_layout
 
 \begin_layout Subsection
@@ -135,8 +134,8 @@ Energy Content
 The energy content of the high-pass filtered image was found to be much
  lesser than that of low-pass filtered images.
  Following observations in Section 3.1 the energy content of the high pass
- filtered images increased with increasing filter length, however they still
- never get close to that of low-pass filtered images.
+ filtered images increased with increasing filter length, however it is
+ still much less than that of low-pass filtered images.
  
 \end_layout
 
@@ -167,23 +166,26 @@ Quantization and coding efficiency
 For effective data compression the bits needed to store the decimated low-pass
  image and the errors at each stage of the pyramid need to be lower than
  that required for the original image.
- This was done by finding the total entropy of each image and equating it
- to the number of bits needed to store the image, assuming that an efficient
+ The total entropy of each image was found and was equated to the number
+ of bits needed to store the image, this was done assuming that an efficient
  coding technique is used.
  
 \end_layout
 
 \begin_layout Standard
 The number of bits required to store the original image was found to be
- more than that required for storing the error and the sub-sampled image.
- Hence using Laplacian pyramids can achieve data compression.
+ more than that required for storing the error and the sub-sampled image
+ for a single stage Laplacian pyramid.
+ Hence it was shown that using Laplacian pyramids can achieve data compression.
  From a information theory perspective the compression is achieved since
- the low pass image has highly correlated adjacent matrix locations, this
- structure of the low pass image is intrinsically exploited when they are
- sub-sampled reducing the number of bits required for storing them.
+ the low-pass image has highly correlated adjacent matrix locations hence
+ losing alternate pixels does not lose much information.
+ This structure of the low-pass filtered image is intrinsically exploited
+ when they are sub-sampled reducing the number of bits required for storing
+ them.
  A Markov chain based technique for finding image correlations might exploit
  this structure well, achieving high compression ratios but this was not
- explored within the scope of the project.
+ explored within the scope of the lab.
 \end_layout
 
 \begin_layout Standard
@@ -192,7 +194,11 @@ The images were then quantized to a step size of 17 to further reduce their
  This reduced the storage required for the one stage Laplacian pyramid scheme
  and the original image.
  The effect on the Laplacian pyramid scheme was however much stronger.
- As the number of layers of the pyramid are increased the number of bits
+ 
+\end_layout
+
+\begin_layout Standard
+As the number of layers of the pyramid are increased the number of bits
  required for storing the image in the Laplacian pyramid scheme further
  decreases.
  This is because each low-passed image(Xn) can be treated as a new image
@@ -201,8 +207,7 @@ The images were then quantized to a step size of 17 to further reduce their
 
 \begin_layout Standard
 To assess the quality of the quantized image the standard deviation between
- the quantized image and the original image is used as a measure.<<comment
- on visual differences in images>>
+ the quantized image and the original image is used as a measure (r.m.s error).
 \end_layout
 
 \begin_layout Standard
@@ -211,13 +216,32 @@ The r.m.s error at the same amount of quantization is much higher for the
  directly quantized image.
  This is because small changes due to quantization in the smaller images
  of the Laplacian pyramid have a much higher effect on the r.m.s error than
- the larger images.
- To get the same r.m.s error as a direct quantizer of step size 17, a step
+ the same change in larger images.
+ 
+\end_layout
+
+\begin_layout Standard
+To get the same r.m.s error as a direct quantizer of step size 17, a step
  size of 10.45 is needed to quantize the images in the Laplacian pyramid.
- This gives a Compression ratio = 
+ This gives a Compression ratio of 
 \series bold
 \emph on
-1.58
+1.58.
+ 
+\series default
+\emph default
+The
+\emph on
+ 
+\emph default
+images produced by direct quantization and by quantizing the Laplacian pyramid
+ look different even when they have the same r.m.s error.
+ The fine color variation in the sky due to the clouds is mostly lost.
+ The direct-quantized image has a lot of high frequency color variations
+ at certain points in the sky(where the intensity thresholds are located),
+ this pattern is not observed in the Laplacian pyramid reconstructed image.
+ These variations arise in the individual quantized images of the Laplacian
+ pyramid but are mostly suppressed in the final reconstructed image.
 \end_layout
 
 \begin_layout Standard
@@ -225,9 +249,9 @@ The r.m.s error at the same amount of quantization is much higher for the
 \series bold
 Equal MSE criterion: 
 \series default
-To solve this problem and optimally quantize the Laplacian pyramid an equal
- MSE(mean squared error) criterion can be used.
- In this the images at various stages of the Laplacian pyramid are quantized
+To reduce the effect of this problem and optimally quantize the Laplacian
+ pyramid an equal MSE(mean squared error) criterion can be used.
+ In this, the images at various stages of the Laplacian pyramid are quantized
  so that they contribute approximately equally to the total MSE.
  This is achieved by measuring the 
 \emph on
@@ -244,7 +268,8 @@ impulse response
  of different stages in the reconstructed images.
  As expected the impulse responses of the smaller images in the Laplacian
  pyramid are higher than the larger ones.
- Hence smaller step sizes are used to quantize the smaller images.
+ Hence smaller step sizes are used to quantize the smaller images in this
+ scheme.
  This improves the Compression ratio to around 
 \series bold
 1.98 
@@ -291,14 +316,14 @@ Conclusion
 \end_layout
 
 \begin_layout Itemize
-A separable 2d low pass filter is easy to design and works much better than
+A separable 2d low pass filter is easy to implement and works better than
  an equivalent non-separable filter.
  
 \end_layout
 
 \begin_layout Itemize
-As the length half-cosine filters increases their cut-off frequency decreases
- and the low-pass filtered images get more blurry.
+As the length of half-cosine filters increases their cut-off frequency decreases
+ and the low-pass filtered images obtained using them get more blurry.
 \end_layout
 
 \begin_layout Itemize
@@ -316,11 +341,444 @@ Quantizing images can reduce the storage space they require.
 \begin_layout Itemize
 When quantizing images in the Laplacian pyramid an equal MSE criterion can
  be used to optimize the compression ratio.
- This can achieve compression ratios around 2.
+ This can achieve compression ratios of around 2.
 \end_layout
 
 \begin_layout Itemize
 A longer filter reduces the effectiveness of the Laplacian pyramid method.
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/highpass5.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename images/highpass15.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+High-pass for N=5,15
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/lowpass5.png
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename images/lowpass15.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Low-pass for N=5,15
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+High-pass and Low-pass filtered images for different filter lengths
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/DIRECT_qUANTIZATION_17.png
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Direct Quantized
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/pyramid_quantization10p45.png
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Laplacian Scheme with quantization
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Direct and Laplacian Quantized images with same r.m.s error
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Filter length
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Low-pass
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+High-Pass
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.28x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.52x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.25x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.80x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.24x
+\begin_inset Formula $10^{9}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5.79x
+\begin_inset Formula $10^{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Comparing energy of Low-pass and High-pass images for different filter lengths
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
