@@ -1,4 +1,4 @@
-function Z0 = rowdec(X4,Y0,Y1,Y2,Y3, h)
+function Z0 = py4dec(X4,Y0,Y1,Y2,Y3, h)
 
 Z3=interpolate1(X4,h)+Y3;
 Z2=interpolate1(Z3,h)+Y2;

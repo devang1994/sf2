@@ -214,6 +214,10 @@ The r.m.s error at the same amount of quantization is much higher for the
  the larger images.
  To get the same r.m.s error as a direct quantizer of step size 17, a step
  size of 10.45 is needed to quantize the images in the Laplacian pyramid.
+ This gives a Compression ratio = 
+\series bold
+\emph on
+1.58
 \end_layout
 
 \begin_layout Standard
@@ -226,12 +230,57 @@ To solve this problem and optimally quantize the Laplacian pyramid an equal
  In this the images at various stages of the Laplacian pyramid are quantized
  so that they contribute approximately equally to the total MSE.
  This is achieved by measuring the 
+\emph on
+
 \begin_inset Quotes eld
 \end_inset
 
-impulse response of different stages in the reconstructed images.
+impulse response
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+ of different stages in the reconstructed images.
  As expected the impulse responses of the smaller images in the Laplacian
  pyramid are higher than the larger ones.
+ Hence smaller step sizes are used to quantize the smaller images.
+ This improves the Compression ratio to around 
+\series bold
+1.98 
+\series default
+which is much better than than the original scheme.
+\end_layout
+
+\begin_layout Section
+Effect of filter length
+\end_layout
+
+\begin_layout Standard
+In sections 4 and 5 above 
+\series bold
+h
+\series default
+ is 
+\begin_inset Formula $\frac{1}{4}\left[1\:2\:1\right]$
+\end_inset
+
+, in this section 
+\series bold
+h
+\series default
+ is changed to 
+\begin_inset Formula $\frac{1}{16}\left[1\:4\:6\:4\:1\right]$
+\end_inset
+
+, which has a lower cut-off frequency than the original filter.
+ This altered the impulse respose of different images, which grew slower
+ than sections 4 and 5 due to the low cutoff nature of the filter.
+ Using optimized step sizes a Compression ratio 
+\series bold
+1.77 
+\series default
+was obtained.
 \end_layout
 
 \end_body
