@@ -1,0 +1,2236 @@
+#LyX 1.6.10 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 1.5cm
+\topmargin 1cm
+\rightmargin 1.5cm
+\bottommargin 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Second Interim Report
+\end_layout
+
+\begin_layout Author
+Devang Agrawal
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+This report follows on from the First Interim Report.
+ In this report mainly the compression ratio and the visual features produced
+ by various transforms are explored.
+ The transforms explored are Discrete Cosine Transform, Lapped Bi-Orthogonal
+ Transform and the Discrete Wavelet Transform.
+ 
+\end_layout
+
+\begin_layout Section
+Discrete Cosine Transform (DCT)
+\end_layout
+
+\begin_layout Standard
+DCT performs energy compaction by operating on non overlapping blocks of
+ pixels.
+\end_layout
+
+\begin_layout Standard
+After transforming the image using DCT, different frequency components of
+ various blocks can be grouped together to form sub-images representing
+ the frequency content of the entire image.
+ These are shown in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Some-subimages-formed"
+
+\end_inset
+
+.
+ Most of the energy of the image can be seen to be concentrated in the DC
+ component, the energy keeps decreasing for higher spatial frequencies.
+ This is very clearly shown in Fig.
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Energies-of-subimages"
+
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+Images of the different frequency DCT coefficients corresponding to different
+ spatial frequencies were generated using the transformation matrix, they
+ are given in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2d-DCT-coeff"
+
+\end_inset
+
+ in the Appendix.
+ The top left image represents the DC component, moving rightwards increases
+ the horizontal spatial frequency and moving downward increases the vertical
+ spatial frequency.
+\end_layout
+
+\begin_layout Subsection*
+
+\series bold
+Quantization and Coding efficiency
+\end_layout
+
+\begin_layout Standard
+The transformed image can be quantized to decrease the bits required to
+ store it.
+ The transformed image was quantized using a step-size of 17.
+ The normalized regrouped image is given in Figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Normalized-Regrouped-transformed"
+
+\end_inset
+
+.
+ It can be seen that there are slightly different probability distributions
+ of pixels in each of the sub-images.
+ The distribution of the DC component based sub image can be seen to be
+ very different from the others.
+ 
+\end_layout
+
+\begin_layout Standard
+The reconstruction was done after quantizing the transformed image with
+ a step size of 17.
+ This then means that the sum of the total entropy of the sub-images is
+ less than the total entropy of the entire image.
+ Some compression can hence be achieved simply by using different encodings
+ for each of the sub-images.
+ Table 1 shows the total entropy of the image for different transform sizes
+ calculated using either sub-images or the entire image.
+\end_layout
+
+\begin_layout Standard
+Figure 4 shows a part of an image reconstructed from the transformed image,
+ block artifacts have been introduced into the image and are clearly visible
+ hence affecting the visual quality.
+ However the overall visual quality is much better than that of the directly
+ quantized image which has unrealistic intensity jumps.
+ The standard deviation between the reconstructed image and the original
+ image is less than that of a directly quantized image .
+ The compression ratio of this scheme was then calculated to be around 
+\series bold
+\emph on
+3.
+ 
+\series default
+\emph default
+Compression ratios for various transform sizes are given in Table 2.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Alternative transform sizes
+\end_layout
+
+\begin_layout Standard
+Some alternative block sizes are used for making the transformed images.
+ The images obtained by using 4 x 4 blocks look very different from the
+ ones with 16 x 16 blocks.
+ Parts of the images are given in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Reconstructed-diff-blocks"
+
+\end_inset
+
+.
+ The block artifacts in these images are really bad.
+ The image with 4 x 4 DCT has really small blocks which are all visible
+ and make the image look very 
+\begin_inset Quotes eld
+\end_inset
+
+pixelated
+\begin_inset Quotes erd
+\end_inset
+
+, in the image with 16 x 16 DCT , the blocks are really big and adversely
+ affect the appearance of the image.
+ The compression ratios for various transform sizes are given in Table 2.
+ It can be seen that the compression ratio is the largest for the 8 x 8
+ blocks.
+ 8 x 8 blocks provide the highest compression ratio and the best resultant
+ image and are hence the best choice for the sample 
+\begin_inset Quotes eld
+\end_inset
+
+lighthouse
+\begin_inset Quotes erd
+\end_inset
+
+ image used.
+ However it can be possible that different transform sizes might work better
+ for different types of images.
+ For a very smooth image, with no abrupt changes, a bigger transform size
+ might be better and for image which have very rapidly varying spatial features
+ and sharp edges, a smaller transform size might be better.
+ In Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Reconstructed-diff-blocks"
+
+\end_inset
+
+, it can be seen that the 4 x 4 transform captures the sharp edges near
+ the boundary of the lighthouse and the sky much better than the others,
+ the 16 x 16 transform captures the smooth sky much better than the others.
+ Also artificial images consisting of simple blocks of various sizes would
+ give the best performance with blocks corresponding to their size.
+\end_layout
+
+\begin_layout Standard
+When comparing different transform sizes there is a concern that using 
+\family typewriter
+dctbpp 
+\family default
+gives smaller entropy values for larger transform sizes since the regrouped
+ images are smaller and more deterministic.
+ Using 
+\family typewriter
+dctbpp(Yr,256) 
+\family default
+effectively calculates the entropy individually for each pixel.
+ Each pixel considered as a sub-image is deterministic and hence its entropy
+ is zero.
+ This is a completely unreasonable result as it suggests that zero bits
+ are required to store the image.
+ An alternative would be to use the same sub-image size while calculating
+ bits per pixel.
+ The compression ratio for this scheme is given in Table 2, as expected,
+ the compression ratio for 4 x 4 blocks increases and that for 16 x 16 blocks
+ decreases 
+\end_layout
+
+\begin_layout Standard
+The actual coding scheme would determine which method is closer to the actual
+ number of required bits for the transformed image.
+\end_layout
+
+\begin_layout Section
+Lapped Bi-orthogonal Transform (LBT)
+\end_layout
+
+\begin_layout Standard
+LBT transforms overlapping blocks in X to generate smaller non-overlapping
+ blocks in Y.
+ DCT can then be done on Y.
+ 
+\end_layout
+
+\begin_layout Standard
+It involves a prefiltering stage which transforms the image to make blocks
+ overlap with nearby blocks.
+ The bases for this prefiltering stage are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:LBT-prefiltering-bases"
+
+\end_inset
+
+, parts of some prefiltered images for different POT factors (
+\emph on
+s
+\emph default
+) are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Prefiltered-Images-for"
+
+\end_inset
+
+ .
+ The block artifacts become much more visible with increasing '
+\emph on
+s
+\emph default
+', this is since with increasing 
+\emph on
+'s'
+\emph default
+ the amount of overlap between adjacent blocks increases in the prefiltering
+ and hence the block pattern becomes more obvious.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 7 shows how the Compression ratio varies with POT scaling factor,
+ it can be seen that the Compression Ratio increases and then decreases,
+ the Compression ratio is maximized at s=1.3 with the value 3.197.
+ As '
+\emph on
+s
+\emph default
+' increases the overlap increases which initially helps in reconstruction
+ and increases the Compression ratio but after a point the increaced overlap
+ reduces the Compression ratio.
+\end_layout
+
+\begin_layout Standard
+Figure 8 shows the optimized step size for each POT scaling factor, this
+ increases almost uniformly with slight wobbles around s=2.
+ Figure 9 shows reconstructed images with optimum step size for s=1 , 1.3
+ and 2 .
+ The 3 images look fairly similar but comparing these to images obtained
+ in Figure 5 for DCTs, LBT can be seen to have produced a much better looking
+ image despite having the same standard deviation relative to the original
+ image.
+ The blocking artifacts are mostly gone due to the overlapping blocks used.
+ The lighthouse still distorts the sky around it, but the effect is much
+ weaker and affects visual experience less.
+\end_layout
+
+\begin_layout Subsection*
+Alternative Transform Sizes
+\end_layout
+
+\begin_layout Standard
+The LBT was then investigated using different transform sizes.
+ When calculating the number of bits 
+\family typewriter
+dctbpp(Yr,16) 
+\family default
+was used regardless of the block size to reflect simultaneous coding of
+ several blocks used in actual algorithms.
+ For all experiments in this part 's' was fixed to 1.3 .
+ The Compression ratios are given in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Compression-ratios-LBT"
+
+\end_inset
+
+.
+ It can be seen that the 4 x 4 transform achieves the best Compression ratio.
+ The images obtained using the different transform sizes are given in Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Recon-images-LBT-sizes"
+
+\end_inset
+
+.
+ The one using the 4 x 4 block can be seen to provide the best image, the
+ image does not have very prominent block artifacts like the 2 x 2 and also
+ the area of the sky which is blurred in the vicinity of the tower is not
+ as much as the 8 x 8 or 16 x 16.
+ 
+\end_layout
+
+\begin_layout Section
+Discrete Wavelength Transform (DWT)
+\end_layout
+
+\begin_layout Standard
+The discrete wavelength transform combines best features of the Laplacian
+ pyramid and the DCT.
+ It works by splitting the image into 4 images, a 2D low-pass image UU,
+ a 2D highpass image VV , a horizontal lowpass and a vertical low pass horizonta
+l highpass image VU and a horizontal low pass vertical highpass image UV.
+\end_layout
+
+\begin_layout Standard
+The energies of the highpass images are much lesser than the ones for the
+ 2D low pass image.
+ This justifies recursively splitting the image UU to achieve energy compaction.
+ The energies of the high-pass images are so low that their intensities
+ need to be scaled up on occasions to display them properly.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:DWT_pyramid"
+
+\end_inset
+
+ shows a one layer dwt pyramid, the images UU VU VV and UV can be seen by
+ going clockwise going from the the top-left.
+ UU is a 2D lowpass image, VU picks the vertical edges and UV the horizontal
+ edges.
+ VV is like a 2D highpass image which picks up diagonal edges and very small
+ features (the brick pattern in the lighthouse) in the image.
+ 
+\end_layout
+
+\begin_layout Standard
+To do the final reconstruction an equal MSE based scheme can be used to
+ find ratios of step sizes, this is similar to the one used for Laplacian
+ pyramids in the First Interim Report.
+ An alternative is to use simple equal step sizes.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comp_dwt"
+
+\end_inset
+
+ shows the compression ratios for using either constant step size, or the
+ equal MSE scheme.
+ For the equal MSE scheme the Compression ratios increase with increasing
+ n, however increasing n over 4 does not change the Compression ratio that
+ much and hence does not provide much benefit.
+ A 4 level DWT is reasonably optimum for the bridge and lighthouse images.
+ The compression ratio for the equal step size scheme increaces on increasing
+ the levels in the DWT since the impulse response of the deeper layers keeps
+ increasing and hence quantization in them affects the final image greatly.
+ 
+\end_layout
+
+\begin_layout Standard
+The compression ratios obtained for the bridge image are much smaller than
+ that obtained for the lighthouse image.
+ The bridge image has a lot of energy in the high pass images due to the
+ plants present around the bridge.
+ This reduces the effectiveness of recursively compressing the low-pass
+ image.
+\end_layout
+
+\begin_layout Standard
+For the bridge image it was seen that there is not that much visual difference
+ between the original bridge image and the image reconstructed using DWT
+ with either equal MSE or equal step sizes.
+ Changing the number of levels does not impact the visual features of the
+ image by much either.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Reconstructed-lighthouse-DWT"
+
+\end_inset
+
+ shows the lighthouse for 3 layer DWT using equal MSE scheme or equal step
+ sizes.
+ The clouds have become very distorted in these images as compared to the
+ original.
+ The clouds form the low frequency part of the image and are hence affected
+ the most when DWT is used.
+ 
+\end_layout
+
+\begin_layout Standard
+No significant visual difference is observed by varying the number of layers.
+\end_layout
+
+\begin_layout Standard
+Overall the image reconstruction for both the cases is reasonably good pointing
+ towards the strength of DWT as a compression method.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+All the three transforms explored in the lab demonstrated excellent compression
+ ratios.
+ However the visual features displayed by the three transforms were very
+ different.
+ The Discrete Cosine transform resulted in unpleasant blocking artifacts,
+ the Lapped Bi-Orthogonal Transform improved on these artifacts and reduced
+ their effect, but there was still a considerable distortion around object
+ boundaries.
+ The discrete wavelet transform proved to be the best transform explored
+ in the lab.
+ It achieved a Compression Ratio comparable to the other 2 transforms but
+ also managed to remove most of the artifacts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Appendix
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/draw_regroup1.png
+	width 40text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Some subimages formed by grouping different frequency components from various
+ transformed image blocks together
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Some-subimages-formed"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/energies_of_blocks.png
+	lyxscale 55
+	width 55text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Energies of subimages for different spatial frequencies
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Energies-of-subimages"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/bases.png
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The 2D DCT coefficients 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2d-DCT-coeff"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \space{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/quantized_reqroup_17.png
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Part of the Normalized Regrouped transformed image formed after quantizing
+ the transformed image
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Normalized-Regrouped-transformed"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/DIRECT_qUANTIZATION_17.png
+	width 23text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Directly Quantized
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/fourx4.png
+	width 23text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+4 x 4
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \space{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/eightx8.png
+	width 23text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+8 x 8
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \space{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/sixteenx16.png
+	width 23text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+16 x 16
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Reconstructed images using different Block sizes with same deviation from
+ the original image
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Reconstructed-diff-blocks"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Total Entropy(in kbits)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Entire Image
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+97.4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Using Sub-images
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+109.63
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Entropy of image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Transform-Sizes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4x4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8x8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16x16
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Compression Ratio variable N
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.69
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.99
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.93
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Compression ratio with N=8 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.92
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.99
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.8515
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimum-Step Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24.35
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+24.15
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+22.75
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Compression Ratio with either Variable N or N=8 in 
+\family typewriter
+dctbpp 
+\family default
+and Optimum step-sizes
+\family typewriter
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/BASES_PREFILTERING.png
+	width 45text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+LBT prefiltering bases
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:LBT-prefiltering-bases"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/pre_filterSeq1.png
+	width 26text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+s=1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/pre_filterSeq1p3.png
+	width 26text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+s=1.3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/pre_filterSeq2.png
+	width 26text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Prefiltered Images for different POT scaling factor (s)
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Prefiltered-Images-for"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/CRvS.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Compression ratios vs POT scaling factors
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \space{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+width "45text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/optQvS.png
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Optimized Quantization step vs POT scaling factors
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBTseq1.png
+	width 26text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+s=1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBTseq1p3.png
+	width 26text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+s=1.3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBTseq2.png
+	width 26text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+s=2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Reconstructed LBT images with different POT scaling factors
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Compression Ratio
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2 x 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.99
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4 x 4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.62
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8 x 8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.50
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16 x 16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.01
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Compression ratios for various transform sizes with LBTs
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Compression-ratios-LBT"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBT2.png
+	width 23text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+2 x 2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBT4.png
+	width 23text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+4 x 4
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBT8.png
+	width 23text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+8 x 8
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/LBT16.png
+	width 23text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+16 x 16
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Reconstructed images for Different Transform Sizes for LBT
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Recon-images-LBT-sizes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/oneLayer.png
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Images produced from a 1 layer DWT pyramid 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:DWT_pyramid"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/light_house_CR.png
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+For the lighthouse image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/bridge_CR.png
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+For the bridge image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Values of Compression ratio for either constant step size or equal MSE strategie
+s with DWT
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Comp_dwt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/house_m_3.png
+	width 27text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Equal MSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/house_c_3.png
+	width 27text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Equal Step Size
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/week2/dwt/house_original.png
+	width 27text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Original
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Reconstructed lighthouse image using 3 layer DWT
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Reconstructed-lighthouse-DWT"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

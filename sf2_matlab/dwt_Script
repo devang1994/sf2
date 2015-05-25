@@ -1,0 +1,24 @@
+load lighthouse
+X=X-128;
+
+h1=[-1 2 6 2 -1]/8;
+h2=[-1 2 -1]/4;
+
+
+U=rowdec(X,h1);
+draw(U)
+V=rowdec2(X,h2);
+
+UU=rowdec(U',h1)';
+draw(UU)
+UV=rowdec2(U',h2);
+VU=rowdec(V',h1)';
+VV=rowdec2(V',h2)';
+UV=rowdec2(U',h2)';
+
+
+
+g1=[1 2 1]/2;
+g2=[-1 -2 6 -2 -1]/4;
+Ur=rowint(UU',g1)'+rowint2(UV',g2)';
+Vr=rowint(VU',g1)' + rowint2(VV',g2)';

@@ -70,9 +70,9 @@ sy=size(Yq);
 t = 1:M;
 huffhist = zeros(16*16,1);
 vlc = [];
-for r=0:M:(sy(1)-M),
+for r=0:M:(sy(1)-M),%for rows
   vlc1 = [];
-  for c=0:M:(sy(2)-M),
+  for c=0:M:(sy(2)-M),%for columns
     yq = Yq(r+t,c+t);
     % Possibly regroup 
     if (M > N) yq = regroup(yq, N); end
