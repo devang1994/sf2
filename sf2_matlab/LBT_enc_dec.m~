@@ -1,0 +1,12 @@
+function Zr=LBT_enc_dec(X,N, M,opthuff, dcbits)
+
+%all arguments to be provided
+%no q step since it is calculated
+
+q=findq_5kb_LBT(X,N,M,1.3,30,opthuff,dcbits);
+
+
+[vlc bits huffval] = jpegencLBT(X, q, N, M,opthuff, dcbits);
+
+Zr=jpegdecLBT(vlc, qstep, N, M, bits, huffval, dcbits);
+

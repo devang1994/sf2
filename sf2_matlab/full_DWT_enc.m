@@ -7,13 +7,13 @@ function vlc = full_DWT_enc(X,n,q)
 
 
 Y=nleveldwt(X,n);
-%Yr=dwtgroup(Y,n);
-Yr=Y;
+Yr=dwtgroup(Y,n);
+%Yr=Y;
 %figure(1);
 %draw(Yr);
 %b_size = 2^n; %size of the blocks formed by the above
 
-b_size=16;%diagnostic
+b_size=8;%diagnostic
 
 [vlc bits huffval]=jpegenc(Yr,q,b_size,b_size);
 

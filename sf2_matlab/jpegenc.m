@@ -96,7 +96,7 @@ if (opthuff==false)
     bits = dbits;
     huffval = dhuffval;
   end
-  fprintf(1,'Bits for coded image = %d\n', sum(vlc(:,2)));
+  fprintf(1,'kBits for coded image = %d\n', sum(vlc(:,2))/(1024*8));
   return;
 end
 
