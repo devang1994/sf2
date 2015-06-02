@@ -4,13 +4,13 @@ function q= findq_5kb_twoLBT(X,n,m,s,qin,opthuff,dcbits)
 %do a simple search 
 
 if(opthuff)
-    target=40940-1424;%num required bits
+    target=40930-1424;%num required bits
 else
-    target=40940;
+    target=40930;
 end
 offset=1;
 
-vlc=jpegencTwoLBT(X,qin,n,m,opthuff,dcbits);
+[vlc bits huffval]=jpegencTwoLBT(X,qin,n,m,opthuff,dcbits);
 disp('here');
 while true
     disp('in loop');
@@ -26,7 +26,7 @@ while true
     end
     
     
-    if(abs(offset)<0.001)
+    if(abs(offset)<0.003)
         break;
     end
     
@@ -34,7 +34,7 @@ while true
     off=offset*20
     qin = qin - offset;
        
-    vlc=jpegencTwoLBT(X,qin,n,m,opthuff,dcbits);
+    [vlc bits huffval]=jpegencTwoLBT(X,qin,n,m,opthuff,dcbits);
 end
 
 q=qin;

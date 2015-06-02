@@ -1,4 +1,4 @@
-function [vlc bits huffval] = jpegencTwoLBT(X, qstep, N, M, opthuff, dcbits)
+function [vlc bits huffval] = jpegencTwoLBTrise(X, qstep, N, M, opthuff, dcbits)
     
 % JPEGENC Encode an image to a (simplified) JPEG bit stream
 %
@@ -55,9 +55,7 @@ Y=twoLayerLBTenc(X,N,1.3);
 
 % Quantise to integers.
 fprintf(1, 'Quantising to step size of %i\n', qstep); 
-
-global rfactor
-Yq=quant1(Y,qstep,qstep*rfactor);
+Yq=quant1(Y,qstep,qstep);
 
 % Generate zig-zag scan of AC coefs.
 scan = diagscan(M);

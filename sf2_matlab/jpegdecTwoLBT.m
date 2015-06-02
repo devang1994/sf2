@@ -124,7 +124,8 @@ for r=0:M:(H-M),
 end
 
 fprintf(1, 'Inverse quantising to step size of %i\n', qstep);
-Zi=quant2(Zq,qstep,qstep);
+global rfactor;
+Zi=quant2(Zq,qstep,rfactor*qstep);
 
 fprintf(1, 'Inverse %i x %i DCT\n', N, N);
 %C8=dct_ii(N);
