@@ -79,12 +79,12 @@ Introduction
 \begin_layout Standard
 In this report the design of various image compression schemes is explored.
  A complete image compression scheme has an encoder which converts a raw
- image into the smallest bitstream and a decoder which reads the bitstream
+ image into a compressed bit-stream and a decoder which decodes the bit-stream
  to reconstruct the image.
  Energy compaction and quantization is usually performed on the image before
  it is passed to the encoder.
  In the lab, a combined run-length / Huffman coding method is used to produce
- the actual bitstream.
+ the actual bit-stream.
  Various energy compaction schemes were then tested with this encoding method.
  The compression schemes were designed in a team of two, the author <<check>>
  explored the two level hierarchical LBT while his team-mate Konstantinos
@@ -122,7 +122,11 @@ This scheme encodes each non-zero coefficient combined with the number of
 \end_layout
 
 \begin_layout Standard
-MxM blocks are coded as a block of Huffman codewords.
+
+\family typewriter
+M x M
+\family default
+ blocks are coded as a block of Huffman codewords.
  The top-left corner coefficient which is usually the DC coefficient from
  a DCT or LBT is encoded using a fixed number of bits.
  Then the rest of the coefficients are arranged into a linear vector by
@@ -140,11 +144,11 @@ key "Wallace91thejpeg"
 \end_layout
 
 \begin_layout Standard
-Huffman code tables are required in the encoding-decoding operation, JPEG
- default tables can be used or optimized Huffman code tables can be produced
- for the specific image.
- When using the optimized tables, the tables need to be transmitted with
- the bitstream.
+Huffman code tables are required in the encoding-decoding operation.
+ Either the default JPEG tables can be used or optimized Huffman code tables
+ can be produced for the specific image being encoded.
+ When using the optimized tables, the tables need to be transmitted along
+ with the bit-stream.
  Section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -157,13 +161,13 @@ reference "sub:Huff-des-for"
 \end_layout
 
 \begin_layout Section
-Centre-clipped linear quantisers
+Center-clipped linear quantizers
 \end_layout
 
 \begin_layout Standard
 The effectiveness of run-length coding depends heavily on the number of
  data samples quantized to zero before encoding.
- Non uniform quanitsers where more samples tend to be quantized to zero
+ Non uniform quantizers where more samples tend to be quantized to zero
  were assessed for their improvement on compression performance.
  Figure 
 \begin_inset CommandInset ref
@@ -173,8 +177,9 @@ reference "fig:Comparison-quantizer"
 \end_inset
 
  shows quantized values for a linearly increasing signal.
- It can be seen how the non-uniform quantizer outputs zeros for a wider
- range of the signal and hence produces more zeros in the quantised signal.
+ It can be seen how the non-uniform quantizer produces zeros for a wider
+ range of values of the input signal and hence produces more zeros in the
+ quantized signal.
  
 \end_layout
 
@@ -312,13 +317,32 @@ key "hore_image_2010"
  Various image quality metrics are available for use, in the lab Structural
  Similarity Index(SSIM) was mostly used to provide a rough way of quantifying
  the visual quality of reconstructed images.
- The images were visually inspected before making most important design
- decisions so as to not rely very heavily on SSIM.
  
 \end_layout
 
+\begin_layout Standard
+It is known that the SSIM does not match perfectly with visual perception
+ of an image
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wang_image_2004"
+
+\end_inset
+
+.
+ The reconstructed images were hence visually inspected before making most
+ of the important design decisions.
+\end_layout
+
 \begin_layout Section
-JPEG based encoding
+Baseline JPEG coding
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Baseline-JPEG-coding"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -326,7 +350,7 @@ JPEG encoding is based on
 \family typewriter
  N x N 
 \family default
-DCT transfroms which can be grouped into
+DCT transforms which can be grouped into
 \family typewriter
  M x M
 \family default
@@ -352,9 +376,16 @@ reference "fig:Parts-images-DCT"
 
  shows parts of some of the reconstructed images using this scheme.
  It can be seen that the images have very prominent blocking artifacts and
- are from visually pleasing.
+ are not visually pleasing.
  Further tests on the scheme were abandoned in favour of more comprehensive
- tests on a similar LBT based scheme as detailed in Section 2.
+ tests on similar LBT based schemes as detailed in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:jpegenc-LBT"
+
+\end_inset
+
+.
  
 \begin_inset Float figure
 wide false
@@ -463,7 +494,7 @@ name "fig:Parts-images-DCT"
 \end_layout
 
 \begin_layout Section
-jpegenc LBT
+LBT based encoding
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:jpegenc-LBT"
@@ -474,20 +505,29 @@ name "sec:jpegenc-LBT"
 \end_layout
 
 \begin_layout Standard
-As explored in Intrerim Report 2, LBT is a major improvement on the DCT
- and provides much better compression by reducing blocking artifacts.
- The simple JPEG based encoding scheme described in Section 1 was modified
- to use the Lapped Bi-Orthogonal Transform(LBT) in place of the DCT.
+As explored in the second interim report, LBT is a major improvement on
+ the DCT and provides much better visual quality by reducing blocking artifacts.
+ The simple JPEG based encoding scheme described in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Baseline-JPEG-coding"
+
+\end_inset
+
+ was modified to use the Lapped Bi-Orthogonal Transform(LBT) in place of
+ the DCT.
  Different values of M and N were assessed for their effectiveness in coding
  the images, the value of the quantization step was set so as to produce
  5kB images to be compared to each other using various metrics and visual
  inspection.
- Table 1 shows SSIM values for this scheme.
- It is interesting to note that for very small values of M (eg M=4) the
- image could not be compressed to below 5kB regardless of the amount of
- quantization done, this is since very small blocks are not very effectively
- coded by run length encoding.
  
+\end_layout
+
+\begin_layout Standard
+Table 1 shows some of the SSIM values obtain, it is interesting to note
+ that for very small values of M (eg M=4) the image could not be compressed
+ to below 5kB regardless of the amount of quantization done, this happens
+ as the encoding block size is too small for run-length coding to be effective.
 \end_layout
 
 \begin_layout Standard
@@ -501,9 +541,9 @@ reference "fig: Parts-images-LBT"
 
 .
  It can be seen that there is considerable distortion around sharp boundaries
- as was noted in the previous report.
- The lighthouse considerably distorts the sky around it, the use of bigger
- blocks makes this worse.
+ as was noted in the interim report.
+ The lighthouse can be seen to considerably distort the sky around it, the
+ use of bigger blocks makes this worse.
  
 \end_layout
 
@@ -511,7 +551,7 @@ reference "fig: Parts-images-LBT"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Float figure
@@ -615,12 +655,12 @@ name "fig: Parts-images-LBT"
 \end_layout
 
 \begin_layout Section
-A 2 layer LBT
+Two stage hierarchical LBT
 \end_layout
 
 \begin_layout Standard
-The LBT based scheme was then further modified to use a two stage hierarchical
- lapped biorthogonal transform based on the Microsoft HD photo standard
+The LBT based scheme was then modified to use a two stage hierarchical lapped
+ bi-orthogonal transform based on the Microsoft HD photo standard
 \begin_inset CommandInset citation
 LatexCommand cite
 key "srinivasan_hd_2007"
@@ -628,7 +668,6 @@ key "srinivasan_hd_2007"
 \end_inset
 
 .
- Figure 
 \end_layout
 
 \begin_layout Standard
@@ -692,8 +731,8 @@ Do LBT on the smaller image using NxN blocks.
 \begin_layout Enumerate
 
 \family typewriter
-Return transform coeffiecients from the smaller image to their original
- place in X1.
+Return transform coefficients from the smaller image to their original place
+ in X1.
  
 \end_layout
 
@@ -829,7 +868,7 @@ name "alg:The-algorithm-lbt2"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
@@ -883,8 +922,14 @@ name "fig:Illustration-showing-two"
 \end_layout
 
 \begin_layout Standard
-Using an approach very similar to the one used in Section 3, M and N were
- changed and the value of SSIM was noted.
+Using an approach very similar to the one used in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:jpegenc-LBT"
+
+\end_inset
+
+, M and N were changed and the value of SSIM was noted.
  Table 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -901,12 +946,16 @@ reference "fig:Images-two-LBT"
 
 \end_inset
 
-shows some reconstructed images with various values of M and N.
- Images with N=8 or N=16 have a ubiquitous speckle pattern which reduce
- the visual experience.
+ shows some reconstructed images with various values of M and N.
+ 
+\end_layout
+
+\begin_layout Standard
+Images with N=8 or N=16 have a ubiquitous speckle pattern which reduce the
+ visual experience.
  The area between individual flamingos in the image can be seen to have
- a lot of noise, the image with N=4, M=16 has less of this noise as it uses
- smaller block sizes.
+ a lot of noise caused by this pattern, the image with N=4, M=16 has less
+ of this noise as it uses smaller block sizes.
  This is consistent with expectations following observations with LBTs in
  Section 
 \begin_inset CommandInset ref
@@ -917,7 +966,7 @@ reference "sec:jpegenc-LBT"
 
  and those in the second interim report.
  The image constructed using N=4 and M=16 can be seen to be the best despite
- having the lowest SSIM value of the 3 images.
+ having the lowest SSIM value of the three images shown.
  This is repeated for some other test
 \noun on
  
@@ -925,6 +974,7 @@ reference "sec:jpegenc-LBT"
 images and the same observation is made.<<possibly include same from bridge>>.
  For the rest of the project N=4, M=16 were used as the optimal parameters
  for the hierarchical two layer LBT.
+ <<various images visual features compare>>
 \end_layout
 
 \begin_layout Standard
@@ -1080,7 +1130,7 @@ name "fig:Images-two-LBT"
 \end_layout
 
 \begin_layout Subsection
-Varying quantise rise
+Varying quantize rise
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Varying-quantise-rise"
@@ -1112,13 +1162,13 @@ for images compressed to 5kB
 rise1 
 \family default
 and step-size.
- It can be seen that the image quality of the compressed 5kB image increaces
+ It can be seen that the image quality of the compressed 5kB image increases
  rapidly till 
 \family typewriter
 rfactor=0.7 
 \family default
 and then it does not change much.
- <<do equal rms based anf then comment to finish this section>>
+ <<do equal RMS based and then comment to finish this section>>
 \end_layout
 
 \begin_layout Standard
@@ -1199,13 +1249,25 @@ reference "sec:Combined-run-length-/"
 
  the Huffman tables can be either generated optimally for each image or
  default JPEG values can be used.
- This presents a tradeoff since the optimum Huffman tables need to be transmitte
-d with the image.
+ This presents a trade-off since the optimum Huffman tables need to be transmitt
+ed with the image.
  
 \end_layout
 
 \begin_layout Standard
 <<do both 5kB image SSIM and same RMS error image size>>
+\end_layout
+
+\begin_layout Section
+DWT based encoding
+\end_layout
+
+\begin_layout Section
+Discussion 
+\end_layout
+
+\begin_layout Standard
+Comparing the reconstructed images produced by DWT etc.
 \end_layout
 
 \begin_layout Section
@@ -1218,7 +1280,7 @@ Using a quantizer with bigger step improves performance.
 
 \begin_layout Itemize
 It is easier to parallelizes DWT AND LBT than PCA.
- ROI decoding is easy in these since they are instrinsically localized.
+ ROI decoding is easy in these since they are intrinsically localized.
 \end_layout
 
 \begin_layout Itemize
@@ -1233,7 +1295,7 @@ SSIM or any other index is not perfect at predictions
 \begin_layout Itemize
 Competition, it was very tricky to decide which was the best image, this
  talks about the nature of the image compression problem, different encdong
- schemes led to different artifacts and preserved diffferent feartures of
+ schemes led to different artifacts and preserved different features of
  the image, it is hence very hard to do a subjective comparison of the images.
  
 \end_layout
@@ -1263,11 +1325,11 @@ status open
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="4">
+<lyxtabular version="3" rows="5" columns="4">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1426,7 +1488,7 @@ NO
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1435,7 +1497,7 @@ NO
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1444,7 +1506,7 @@ NO
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1453,49 +1515,11 @@ NO
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 0.63
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-32
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
--
 \end_layout
 
 \end_inset
@@ -1571,7 +1595,7 @@ The Value of SSIM for 5kB images using LBT for different images.
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Float table
