@@ -91,12 +91,3 @@
 	keywords = {Algorithm design and analysis, Algorithms, Artificial Intelligence, Biomimetics, distorted image, Distortion measurement, Humans, human visual system, image enhancement, image information, Image Interpretation, Computer-Assisted, Image quality, image quality assessment (QA), information fidelity, Information Storage and Retrieval, natural scene statistics (NSS), Predictive models, Psychology, quality assessment, Reproducibility of Results, Sensitivity and Specificity, signal fidelity measures, Statistics, Video sharing, visual information fidelity, visual perception, visual quality, Visual system},
 	pages = {430--444}
 }
-
-
-@ARTICLE{Wallace91thejpeg,
-    author = {Gregory K. Wallace},
-    title = {The JPEG still picture compression standard},
-    journal = {Communications of the ACM},
-    year = {1991},
-    pages = {30--44}
-}

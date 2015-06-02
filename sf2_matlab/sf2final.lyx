@@ -1,21 +1,29 @@
-#LyX 1.6.10 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
 \use_default_options true
+\maintain_unincluded_children false
 \language english
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -23,9 +31,18 @@
 \use_geometry true
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \leftmargin 2cm
 \topmargin 2cm
 \rightmargin 2cm
@@ -33,15 +50,16 @@
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -59,16 +77,244 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-SSIM was used as a index
+In this report the design of various image compression schemes is explored.
+ A complete image compression scheme has an encoder which converts a raw
+ image into the smallest bitstream and a decoder which reads the bitstream
+ to reconstruct the image.
+ Energy compaction and quantization is usually performed on the image before
+ it is passed to the encoder.
+ In the lab, a combined run-length / Huffman coding method is used to produce
+ the actual bitstream.
+ Various energy compaction schemes were then tested with this encoding method.
+ The compression schemes were designed in a team of two, the author <<check>>
+ explored the two level hierarchical LBT while his team-mate Konstantinos
+ Kyriakopulos explored the DWT based compression scheme.
+\end_layout
+
+\begin_layout Standard
+Structural Similarity Index(SSIM)
 \begin_inset CommandInset citation
 LatexCommand cite
 key "wang_image_2004"
 
 \end_inset
 
-<<consider writing more about error measures>> .
- <<talk about huffman coding decoding possibly as a section, mention optimal
- in later >>
+ was used as a quality metric for the reconstructed images.
+ 
+\end_layout
+
+\begin_layout Section
+Combined run-length / Huffman coding
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Combined-run-length-/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This scheme encodes each non-zero coefficient combined with the number of
+ zero coefficients preceding it as a single event.
+ Each such event is then coded with a standard Huffman code.
+ 
+\end_layout
+
+\begin_layout Standard
+MxM blocks are coded as a block of Huffman codewords.
+ The top-left corner coefficient which is usually the DC coefficient from
+ a DCT or LBT is encoded using a fixed number of bits.
+ Then the rest of the coefficients are arranged into a linear vector by
+ scanning the block in a zig-zag manner.
+ This vector is then coded as described above.
+ This coding scheme is based on that used in the JPEG standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wallace91thejpeg"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Huffman code tables are required in the encoding-decoding operation, JPEG
+ default tables can be used or optimized Huffman code tables can be produced
+ for the specific image.
+ When using the optimized tables, the tables need to be transmitted with
+ the bitstream.
+ Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Huff-des-for"
+
+\end_inset
+
+ explores the merits of the two strategies in the context of a two layer
+ LBT based transform.
+\end_layout
+
+\begin_layout Section
+Centre-clipped linear quantisers
+\end_layout
+
+\begin_layout Standard
+The effectiveness of run-length coding depends heavily on the number of
+ data samples quantized to zero before encoding.
+ Non uniform quanitsers where more samples tend to be quantized to zero
+ were assessed for their improvement on compression performance.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-quantizer"
+
+\end_inset
+
+ shows quantized values for a linearly increasing signal.
+ It can be seen how the non-uniform quantizer outputs zeros for a wider
+ range of the signal and hence produces more zeros in the quantised signal.
+ 
+\end_layout
+
+\begin_layout Standard
+Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Varying-quantise-rise"
+
+\end_inset
+
+ explores the optimum ratio of 
+\noun on
+rise1 
+\noun default
+to step-size in the context of a two layer LBT based transform.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/final/uniquant.png
+	width 47text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Uniform
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/final/non_uniquant.png
+	width 47text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Non-Uniform
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Comparison of uniform and non uniform quantizers
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Comparison-quantizer"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Image Quality Metrics
+\end_layout
+
+\begin_layout Standard
+Measuring subjective image quality is known to be a hard problem
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hore_image_2010"
+
+\end_inset
+
+.
+ Various image quality metrics are available for use, in the lab Structural
+ Similarity Index(SSIM) was mostly used to provide a rough way of quantifying
+ the visual quality of reconstructed images.
+ The images were visually inspected before making most important design
+ decisions so as to not rely very heavily on SSIM.
+ 
 \end_layout
 
 \begin_layout Section
@@ -417,6 +663,7 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "47col%"
 special "none"
 height "1in"
@@ -491,6 +738,7 @@ hor_pos "c"
 has_inner_box 1
 inner_pos "t"
 use_parbox 0
+use_makebox 0
 width "47col%"
 special "none"
 height "1in"
@@ -833,24 +1081,17 @@ name "fig:Images-two-LBT"
 
 \begin_layout Subsection
 Varying quantise rise
-\end_layout
-
-\begin_layout Standard
-The effectiveness of run-length coding depends heavily on the number of
- data samples quantized to zero before encoding.
- Non uniform quanitsers where more samples tend to be quantized to zero
- were assessed for their improvement on copmpression performance.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Comparison-quantizer"
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Varying-quantise-rise"
 
 \end_inset
 
- shows quantized values for a linearly increasing signal.
- It can be seen how the non-uniform quantizer outputs zeros for a wider
- range of the signal and hence produces more zeros in the quantised signal.
- Figure 
+
+\end_layout
+
+\begin_layout Standard
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:VariationSSIMrfactr"
@@ -878,121 +1119,6 @@ rfactor=0.7
 \family default
 and then it does not change much.
  <<do equal rms based anf then comment to finish this section>>
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/final/uniquant.png
-	width 47text%
-
-\end_inset
-
-
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Uniform
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/final/non_uniquant.png
-	width 47text%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Non-Uniform
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
- 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Comparison of uniform and non uniform quantizers
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Comparison-quantizer"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -1052,26 +1178,34 @@ name "fig:VariationSSIMrfactr"
 
 \end_layout
 
-\begin_layout Standard
-Values for step = 0.5 , 1.5 were put in and the result was obtained , the
- ssim for 5kB images were noted
-\end_layout
-
 \begin_layout Subsection
 Huff des for optimal coding
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Huff-des-for"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Doing everything with optimal huff write about non optimal here
-\end_layout
+As mentioned in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Combined-run-length-/"
 
-\begin_layout Subsection
-Improved diag scanning
+\end_inset
+
+ the Huffman tables can be either generated optimally for each image or
+ default JPEG values can be used.
+ This presents a tradeoff since the optimum Huffman tables need to be transmitte
+d with the image.
+ 
 \end_layout
 
 \begin_layout Standard
-The coefficients being transformed in blocks of MxM were observed and it
- was noted that higher run lengths can be obtained with scanning in ????
+<<do both 5kB image SSIM and same RMS error image size>>
 \end_layout
 
 \begin_layout Section
@@ -1134,7 +1268,7 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="4">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1448,7 +1582,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="4">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1673,7 +1807,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="4">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -1902,7 +2036,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Tabular
 <lyxtabular version="3" rows="5" columns="4">
-<features>
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
